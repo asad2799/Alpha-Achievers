@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alpha Achievers — Construction Excellence · Saudi Arabia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0b0d;
+  --ink-1:#101013;
+  --ink-2:#16161a;
+  --ink-3:#1d1d22;
+  --gold:#c6a256;
+  --gold-soft:#dcc189;
+  --gold-deep:#9c7e3c;
+  --cream:#ece5d6;
+  --muted:#928a78;
+  --muted-2:#6f6a5f;
+  --line:rgba(198,162,86,.16);
+  --line-soft:rgba(236,229,214,.08);
+  --display:"Fraunces",Georgia,serif;
+  --sans:"Inter",system-ui,-apple-system,sans-serif;
+  --maxw:1240px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--cream);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:var(--ink)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ---------- custom cursor ---------- */
+.cursor-dot,.cursor-ring{
+  position:fixed;top:0;left:0;border-radius:50%;
+  pointer-events:none;z-index:9999;mix-blend-mode:difference;
+  transform:translate(-50%,-50%);
+}
+.cursor-dot{width:6px;height:6px;background:var(--gold-soft)}
+.cursor-ring{
+  width:38px;height:38px;border:1px solid rgba(220,193,137,.7);
+  transition:width .3s ease,height .3s ease,background .3s ease,border-color .3s ease,opacity .3s ease;
+}
+.cursor-ring.hovering{width:64px;height:64px;background:rgba(198,162,86,.12);border-color:transparent}
+.cursor-ring.clicking{width:26px;height:26px}
+.cursor-label{
+  position:fixed;top:0;left:0;transform:translate(-50%,-50%);
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  z-index:10000;pointer-events:none;opacity:0;transition:opacity .25s ease;font-weight:500;
+}
+.cursor-label.show{opacity:1}
+@media (hover:hover) and (pointer:fine){
+  body.has-cursor *{cursor:none !important}
+}
+@media (hover:none),(pointer:coarse){.cursor-dot,.cursor-ring,.cursor-label{display:none}}
+
+/* ---------- shell ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.eyebrow{
+  font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);
+  font-weight:500;display:inline-flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);opacity:.7}
+.eyebrow.center::after{content:"";width:26px;height:1px;background:var(--gold);opacity:.7}
+
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.08;letter-spacing:-.01em}
+.lead{color:var(--muted);font-weight:300;font-size:1.05rem;max-width:54ch}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:26px 0;transition:padding .4s ease,background .4s ease,border-color .4s ease,backdrop-filter .4s ease;
+  border-bottom:1px solid transparent;
+}
+header.nav.solid{
+  padding:16px 0;background:rgba(11,11,13,.82);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.brand{display:flex;flex-direction:column;line-height:1}
+.brand .mark{font-family:var(--display);font-size:1.35rem;letter-spacing:.26em;color:var(--cream);font-weight:500}
+.brand .sub{font-size:8.5px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;margin-top:5px}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-links a{font-size:12.5px;letter-spacing:.06em;color:var(--muted);transition:color .25s ease;position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .3s ease}
+.nav-links a:hover{color:var(--cream)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{border:1px solid var(--line);padding:11px 22px;border-radius:2px;color:var(--cream)!important;font-weight:400;transition:all .3s ease}
+.nav-cta::after{display:none}
+.nav-cta:hover{background:var(--gold);color:var(--ink)!important;border-color:var(--gold)}
+.burger{display:none;flex-direction:column;gap:6px;width:30px;background:none;border:none;padding:4px}
+.burger span{display:block;height:1.5px;width:100%;background:var(--cream);transition:.3s}
+.mobile-menu{position:fixed;inset:0;background:var(--ink);z-index:899;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu a{font-family:var(--display);font-size:1.8rem;color:var(--cream)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 70% at 70% 40%,#000 0%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 40%,#000 0%,transparent 75%);
+}
+.hero-glow{position:absolute;width:60vw;height:60vw;right:-10vw;top:-10vw;
+  background:radial-gradient(circle,rgba(198,162,86,.14) 0%,transparent 60%);filter:blur(20px)}
+.hero-photo{position:absolute;inset:0;background:#0d0d10;
+  background-image:linear-gradient(110deg,rgba(11,11,13,.96) 30%,rgba(11,11,13,.55) 100%),
+  url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=70");
+  background-size:cover;background-position:center;opacity:.5}
+.hero-inner{position:relative;z-index:2;width:100%;padding-top:90px}
+.hero h1{font-size:clamp(3rem,8vw,6.4rem);font-weight:300;letter-spacing:-.02em;margin:26px 0 0}
+.hero h1 em{font-style:italic;color:var(--gold-soft);font-weight:400}
+.hero .lead{margin-top:30px;font-size:1.15rem}
+.hero-cta-row{display:flex;gap:18px;margin-top:42px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 30px;border-radius:2px;font-size:13px;letter-spacing:.05em;font-weight:400;transition:all .35s ease}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-soft);transform:translateY(-2px)}
+.btn-ghost{border:1px solid var(--line);color:var(--cream)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-soft)}
+.hero-meta{position:absolute;bottom:42px;left:0;right:0;z-index:2}
+.hero-meta .wrap{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;border-top:1px solid var(--line);padding-top:22px}
+.hero-meta .mitem{font-size:12px;color:var(--muted)}
+.hero-meta .mitem strong{display:block;font-family:var(--display);font-size:1.9rem;color:var(--cream);font-weight:400}
+.scroll-cue{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.scroll-cue i{width:1px;height:34px;background:linear-gradient(var(--gold),transparent);display:block;animation:cueDrop 2s infinite}
+@keyframes cueDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- generic section ---------- */
+section{position:relative}
+.sec{padding:120px 0}
+.sec-head{max-width:760px;margin-bottom:64px}
+.sec-head h2{font-size:clamp(2.2rem,4.6vw,3.6rem);margin-top:22px;font-weight:300}
+.sec-head h2 em{font-style:italic;color:var(--gold-soft)}
+.sec-head .lead{margin-top:22px}
+
+/* ---------- pillars ---------- */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pillar{border:1px solid var(--line);padding:42px 34px;background:linear-gradient(160deg,var(--ink-1),var(--ink));position:relative;overflow:hidden;transition:border-color .4s ease,transform .4s ease}
+.pillar::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .5s ease}
+.pillar:hover{transform:translateY(-6px);border-color:var(--line)}
+.pillar:hover::before{width:100%}
+.pillar .num{font-family:var(--display);font-size:2.4rem;color:var(--gold-deep);font-weight:300}
+.pillar h3{font-size:1.55rem;margin:18px 0 14px;font-weight:400}
+.pillar p{color:var(--muted);font-size:.96rem}
+
+/* ---------- divisions ---------- */
+.division{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border:1px solid var(--line);margin-bottom:28px;overflow:hidden}
+.division.flip .div-media{order:2}
+.div-media{position:relative;min-height:440px;background:var(--ink-2);overflow:hidden}
+.div-photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease;transform:scale(1.06)}
+.div-photo.loaded{opacity:.62}
+.div-media .blueprint{position:absolute;inset:0;z-index:1}
+.div-media .tag{position:absolute;left:28px;bottom:24px;z-index:3;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-soft)}
+.div-media .bignum{position:absolute;right:26px;top:20px;z-index:3;font-family:var(--display);font-size:4rem;color:rgba(236,229,214,.1);font-weight:300}
+.div-body{padding:54px 50px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,var(--ink-1),var(--ink))}
+.div-body .eyebrow{margin-bottom:18px}
+.div-body h3{font-size:2.1rem;font-weight:400;margin-bottom:18px}
+.div-body p{color:var(--muted);font-size:.98rem;margin-bottom:26px}
+.cap-list{display:grid;grid-template-columns:1fr 1fr;gap:12px 26px}
+.cap-list li{list-style:none;font-size:13px;color:var(--cream);padding-left:20px;position:relative;font-weight:300}
+.cap-list li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:1px;background:var(--gold)}
+
+/* ---------- stats strip ---------- */
+.stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-1)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat{padding:56px 24px;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat .v{font-family:var(--display);font-size:3.2rem;color:var(--gold-soft);font-weight:300;line-height:1}
+.stat .l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+
+/* ---------- projects ---------- */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.proj{position:relative;border:1px solid var(--line);overflow:hidden;min-height:420px;background:var(--ink-2);display:flex;flex-direction:column;justify-content:flex-end}
+.proj.wide{grid-column:1/-1;min-height:360px}
+.proj-photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease,transform 6s ease}
+.proj-photo.loaded{opacity:.5}
+.proj:hover .proj-photo.loaded{opacity:.62;transform:scale(1.05)}
+.proj .blueprint{position:absolute;inset:0;z-index:1}
+.proj-grad{position:absolute;inset:0;z-index:2;background:linear-gradient(0deg,rgba(11,11,13,.96) 0%,rgba(11,11,13,.2) 55%,transparent 100%)}
+.proj-content{position:relative;z-index:3;padding:38px 36px}
+.proj .ptag{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;gap:14px;align-items:center}
+.proj h3{font-size:1.7rem;font-weight:400;margin-bottom:10px;line-height:1.15}
+.proj .ploc{font-size:13px;color:var(--muted);margin-bottom:20px}
+.proj-meta{display:flex;gap:30px;border-top:1px solid var(--line-soft);padding-top:18px;flex-wrap:wrap}
+.proj-meta div{font-size:11px;color:var(--muted)}
+.proj-meta strong{display:block;color:var(--cream);font-size:14px;font-weight:400;margin-top:3px;font-family:var(--display)}
+
+/* ---------- sister company ---------- */
+.sister{border:1px solid var(--line);background:linear-gradient(120deg,var(--ink-1),var(--ink));padding:60px 56px;display:grid;grid-template-columns:1.2fr 1fr;gap:50px;align-items:center}
+.sister h3{font-size:2rem;font-weight:400;margin:18px 0 16px}
+.sister p{color:var(--muted);font-size:.98rem}
+.sister-seal{border:1px solid var(--line);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;background:radial-gradient(circle at 50% 30%,rgba(198,162,86,.08),transparent 70%)}
+.sister-seal .sm{font-family:var(--display);font-size:1.5rem;letter-spacing:.18em;color:var(--gold-soft)}
+.sister-seal .ss{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.sister-seal .est{font-size:11px;color:var(--muted-2);margin-top:6px}
+
+/* ---------- org chart ---------- */
+.org{position:relative}
+.org-top{display:flex;justify-content:center;margin-bottom:6px}
+.node{border:1px solid var(--line);background:var(--ink-1);padding:18px 26px;text-align:center;min-width:200px;transition:all .35s ease;position:relative}
+.node:hover{border-color:var(--gold);background:var(--ink-2);transform:translateY(-3px)}
+.node .role{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.node .name{font-family:var(--display);font-size:1.15rem;color:var(--cream);margin-top:6px;font-weight:400}
+.node.lead{min-width:260px;padding:24px 32px;background:linear-gradient(160deg,var(--ink-2),var(--ink-1));border-color:var(--line)}
+.node.lead .name{font-size:1.35rem;color:var(--gold-soft)}
+.org-svg{width:100%;height:60px;display:block}
+.org-svg path{stroke:var(--line);stroke-width:1;fill:none;stroke-dasharray:1;stroke-dashoffset:1}
+.org-branches{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:6px}
+.branch{display:flex;flex-direction:column;align-items:center;gap:14px}
+.branch .head{width:100%}
+.branch .team{width:100%;display:flex;flex-direction:column;gap:10px}
+.subnode{border:1px solid var(--line-soft);background:var(--ink);padding:13px 18px;font-size:12.5px;color:var(--muted);text-align:center;transition:all .3s ease}
+.subnode:hover{color:var(--cream);border-color:var(--line)}
+.org-conn{height:26px;width:1px;background:var(--line);margin:0 auto}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.contact-info .ci{border-top:1px solid var(--line);padding:26px 0;display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:start}
+.contact-info .ci:last-child{border-bottom:1px solid var(--line)}
+.contact-info .ci .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.contact-info .ci .v{color:var(--cream);font-size:15px;font-weight:300}
+.contact-info .ci .v span{color:var(--muted);display:block;font-size:13px;margin-top:4px}
+.form{border:1px solid var(--line);padding:42px 40px;background:linear-gradient(160deg,var(--ink-1),var(--ink))}
+.form h3{font-size:1.5rem;font-weight:400;margin-bottom:26px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.field input,.field textarea,.field select{width:100%;background:var(--ink);border:1px solid var(--line);color:var(--cream);padding:13px 15px;font-family:var(--sans);font-size:14px;font-weight:300;border-radius:2px;transition:border-color .3s ease}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--gold)}
+.form .btn-gold{width:100%;justify-content:center;border:none;cursor:pointer;font-family:var(--sans)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:70px 0 40px;background:var(--ink-1)}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:54px}
+.foot-brand .mark{font-family:var(--display);font-size:1.6rem;letter-spacing:.26em;color:var(--cream)}
+.foot-brand .sub{font-size:9px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-top:6px}
+.foot-brand p{color:var(--muted);font-size:13px;margin-top:20px;max-width:34ch}
+.foot-col h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-family:var(--sans);font-weight:500}
+.foot-col a{display:block;color:var(--muted);font-size:13.5px;margin-bottom:11px;transition:color .25s}
+.foot-col a:hover{color:var(--cream)}
+.foot-bottom{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:26px;font-size:12px;color:var(--muted-2);flex-wrap:wrap;gap:12px}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .pillars{grid-template-columns:1fr}
+  .division,.division.flip{grid-template-columns:1fr}
+  .division .div-media{order:0!important;min-height:300px}
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stat{border-bottom:1px solid var(--line)}
+  .stat:nth-child(odd){border-right:1px solid var(--line)}
+  .stat:nth-child(even){border-right:none}
+  .proj-grid{grid-template-columns:1fr}
+  .sister{grid-template-columns:1fr;padding:44px 30px}
+  .org-branches{grid-template-columns:1fr;gap:34px}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .foot-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px}
+  .sec{padding:84px 0}
+  .div-body{padding:38px 26px}
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .foot-top{grid-template-columns:1fr}
+  .contact-info .ci{grid-template-columns:1fr;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<!-- custom cursor -->
+<div class="cursor-ring" id="ring"></div>
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-label" id="clabel">View</div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="mark">ALPHA</span>
+      <span class="sub">Achievers · Construction</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#about">Firm</a>
+      <a href="#divisions">Divisions</a>
+      <a href="#projects">Projects</a>
+      <a href="#org">Leadership</a>
+      <a href="#contact" class="nav-cta" data-cursor="Talk">Start a Project</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">Firm</a>
+  <a href="#divisions">Divisions</a>
+  <a href="#projects">Projects</a>
+  <a href="#org">Leadership</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hero-photo" id="heroPhoto"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="wrap">
+      <span class="eyebrow reveal in">Jeddah · Kingdom of Saudi Arabia · Vision 2030</span>
+      <h1 class="reveal in d1">Building the Kingdom's<br><em>built environment</em>,<br>pillar by pillar.</h1>
+      <p class="lead reveal in d2">Alpha Achievers is an integrated construction house delivering civil, architectural and MEP excellence across Saudi Arabia — engineered to documentation-grade precision, executed with uncompromising discipline.</p>
+      <div class="hero-cta-row reveal in d3">
+        <a href="#projects" class="btn btn-gold" data-cursor="Portfolio">View Our Work</a>
+        <a href="#divisions" class="btn btn-ghost" data-cursor="Explore">Our Capabilities</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <div class="wrap">
+      <div class="mitem"><strong data-count="14" data-suffix="M">0</strong>SAR Registered Capital</div>
+      <div class="mitem"><strong data-count="3" data-suffix="">0</strong>Integrated Divisions</div>
+      <div class="mitem"><strong data-count="280" data-suffix="K+">0</strong>Sq. Ft. Delivered</div>
+      <div class="scroll-cue">Scroll<i></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / PILLARS -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Why Alpha Achievers</span>
+      <h2>Built on three <em>unshakeable pillars</em></h2>
+      <p class="lead">Our foundation is trust, precision and vision. Every project reflects a deep commitment to transforming the Kingdom's built environment — aligned with Saudi Arabia's Vision 2030 and held to international delivery standards.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal d1" data-cursor="Trust">
+        <div class="num">01</div>
+        <h3>Trust &amp; Integrity</h3>
+        <p>Transparent BOQs, audited measurements and clean contractual conduct under PPRA-grade procurement discipline. What we commit on paper is what we build on site.</p>
+      </div>
+      <div class="pillar reveal d2" data-cursor="Precision">
+        <div class="num">02</div>
+        <h3>Engineering Precision</h3>
+        <p>From quantity take-offs and bar-bending schedules to IFC-coordinated execution, accuracy is enforced at every stage — not corrected after the fact.</p>
+      </div>
+      <div class="pillar reveal d3" data-cursor="Vision">
+        <div class="num">03</div>
+        <h3>Long-Term Vision</h3>
+        <p>We build assets that outlast their handover certificates — durable, serviceable and designed to support the Kingdom's development for decades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVISIONS -->
+<section class="sec" id="divisions" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Three Disciplines, One Standard</span>
+      <h2>Integrated <em>divisions</em></h2>
+      <p class="lead">Three specialised teams working under a single quality régime — so structure, form and systems are coordinated from day one, never stitched together at the end.</p>
+    </div>
+
+    <!-- Civil -->
+    <div class="division reveal" data-cursor="Civil">
+      <div class="div-media">
+        <div class="div-photo" data-src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 600 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="440" fill="#16161a"/>
+          <g stroke="rgba(198,162,86,.22)" stroke-width="1" fill="none">
+            <rect x="60" y="120" width="200" height="240"/><rect x="80" y="150" width="160" height="180"/>
+            <line x1="60" y1="180" x2="260" y2="180"/><line x1="60" y1="240" x2="260" y2="240"/><line x1="60" y1="300" x2="260" y2="300"/>
+            <line x1="120" y1="120" x2="120" y2="360"/><line x1="200" y1="120" x2="200" y2="360"/>
+            <circle cx="380" cy="220" r="80"/><circle cx="380" cy="220" r="50"/>
+            <line x1="300" y1="220" x2="460" y2="220"/><line x1="380" y1="140" x2="380" y2="300"/>
+            <path d="M300 380 L540 380 M300 400 L540 400" stroke-dasharray="6 6"/>
+          </g>
+        </svg>
+        <span class="bignum">01</span>
+        <span class="tag">Civil Engineering</span>
+      </div>
+      <div class="div-body">
+        <span class="eyebrow">Division 01</span>
+        <h3>Civil &amp; Structural</h3>
+        <p>The structural backbone of every project — foundations, frames and infrastructure executed to design intent, with measurement-grade control from take-off to handover.</p>
+        <ul class="cap-list">
+          <li>RCC frame &amp; foundation works</li>
+          <li>Bar bending schedules (BBS)</li>
+          <li>Quantity take-off &amp; BOQ</li>
+          <li>Site survey &amp; setting-out</li>
+          <li>Roads, drainage &amp; earthworks</li>
+          <li>IPC billing &amp; measurement</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="division flip reveal" data-cursor="Design">
+      <div class="div-media">
+        <div class="div-photo" data-src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 600 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="440" fill="#16161a"/>
+          <g stroke="rgba(198,162,86,.22)" stroke-width="1" fill="none">
+            <path d="M120 360 L120 120 L300 60 L480 120 L480 360"/>
+            <line x1="120" y1="200" x2="480" y2="200"/><line x1="120" y1="280" x2="480" y2="280"/>
+            <rect x="160" y="220" width="50" height="50"/><rect x="240" y="220" width="50" height="50"/><rect x="320" y="220" width="50" height="50"/><rect x="400" y="220" width="50" height="50"/>
+            <rect x="160" y="300" width="50" height="50"/><rect x="240" y="300" width="50" height="50"/><rect x="320" y="300" width="50" height="50"/><rect x="400" y="300" width="50" height="50"/>
+            <line x1="300" y1="60" x2="300" y2="360" stroke-dasharray="5 5"/>
+          </g>
+        </svg>
+        <span class="bignum">02</span>
+        <span class="tag">Architecture &amp; BIM</span>
+      </div>
+      <div class="div-body">
+        <span class="eyebrow">Division 02</span>
+        <h3>Architecture &amp; Design</h3>
+        <p>Form that serves function. Concept-to-IFC design with coordinated drawings, façade detailing and BIM-ready documentation that the site can build without guesswork.</p>
+        <ul class="cap-list">
+          <li>Architectural design &amp; detailing</li>
+          <li>Façade &amp; finishing schemes</li>
+          <li>BIM coordination (Revit)</li>
+          <li>3D visualisation &amp; renders</li>
+          <li>IFC drawing production</li>
+          <li>Interior fit-out planning</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MEP -->
+    <div class="division reveal" data-cursor="MEP">
+      <div class="div-media">
+        <div class="div-photo" data-src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 600 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="440" fill="#16161a"/>
+          <g stroke="rgba(198,162,86,.22)" stroke-width="1" fill="none">
+            <path d="M80 140 L520 140 L520 200 L80 200" />
+            <path d="M80 260 L300 260 L300 360 L520 360"/>
+            <circle cx="80" cy="140" r="8"/><circle cx="520" cy="200" r="8"/><circle cx="300" cy="260" r="8"/><circle cx="520" cy="360" r="8"/>
+            <path d="M140 200 L140 300 M220 200 L220 300 M380 140 L380 60 M460 140 L460 60" stroke-dasharray="5 5"/>
+            <rect x="120" y="290" width="40" height="40"/><rect x="200" y="290" width="40" height="40"/>
+          </g>
+        </svg>
+        <span class="bignum">03</span>
+        <span class="tag">MEP Systems</span>
+      </div>
+      <div class="div-body">
+        <span class="eyebrow">Division 03</span>
+        <h3>MEP &amp; Building Services</h3>
+        <p>The systems that bring a building to life — mechanical, electrical and plumbing designed and installed in coordination with structure, so nothing clashes on site.</p>
+        <ul class="cap-list">
+          <li>HVAC design &amp; installation</li>
+          <li>Electrical &amp; LV systems</li>
+          <li>Plumbing &amp; drainage</li>
+          <li>Fire-fighting &amp; safety</li>
+          <li>Medical-gas &amp; specialist services</li>
+          <li>MEP clash coordination</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><div class="v" data-count="3" data-suffix="">0</div><div class="l">Specialist Divisions</div></div>
+    <div class="stat reveal d1"><div class="v" data-count="280" data-suffix="K+">0</div><div class="l">Sq. Ft. Constructed</div></div>
+    <div class="stat reveal d2"><div class="v" data-count="14" data-suffix="M">0</div><div class="l">SAR Capital Base</div></div>
+    <div class="stat reveal d3"><div class="v" data-count="100" data-suffix="%">0</div><div class="l">Documentation Grade</div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Selected Portfolio</span>
+      <h2>Projects we're <em>proud to sign</em></h2>
+      <p class="lead">A selection of government and healthcare infrastructure delivered under rigorous procurement and supervision frameworks — every project photographed, documented and held to handover-grade quality.</p>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- Project 1 -->
+      <div class="proj wide reveal" data-cursor="View">
+        <div class="proj-photo" data-src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1400&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="1200" height="360" fill="#15151a"/>
+          <g stroke="rgba(198,162,86,.18)" stroke-width="1" fill="none">
+            <rect x="120" y="120" width="320" height="180"/><rect x="160" y="150" width="240" height="120"/>
+            <line x1="120" y1="180" x2="440" y2="180"/><line x1="120" y1="240" x2="440" y2="240"/>
+            <path d="M560 300 L560 140 L700 90 L840 140 L840 300"/>
+            <line x1="560" y1="200" x2="840" y2="200"/>
+            <circle cx="1000" cy="180" r="70"/><line x1="930" y1="180" x2="1070" y2="180"/><line x1="1000" y1="110" x2="1000" y2="250"/>
+          </g>
+        </svg>
+        <div class="proj-grad"></div>
+        <div class="proj-content">
+          <div class="ptag">Healthcare · IDAP Framework <span style="width:18px;height:1px;background:var(--gold);display:inline-block"></span> Featured</div>
+          <h3>Hub &amp; Spoke Trauma Hospital, Zahir Pir</h3>
+          <div class="ploc">Attached to Sheikh Zayed Hospital · Rahim Yar Khan</div>
+          <div class="proj-meta">
+            <div>Scope<strong>Civil · Architecture · MEP</strong></div>
+            <div>Covered Area<strong>73,427 sq.ft</strong></div>
+            <div>Capacity<strong>66 Beds + Emergency</strong></div>
+            <div>Status<strong>Delivered</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="proj reveal" data-cursor="View">
+        <div class="proj-photo" data-src="https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&w=1200&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="420" fill="#15151a"/>
+          <g stroke="rgba(198,162,86,.18)" stroke-width="1" fill="none">
+            <rect x="80" y="160" width="120" height="200"/><rect x="240" y="120" width="120" height="240"/><rect x="400" y="160" width="120" height="200"/>
+            <line x1="80" y1="220" x2="520" y2="220"/><line x1="80" y1="290" x2="520" y2="290"/>
+            <path d="M240 120 L300 80 L360 120" />
+          </g>
+        </svg>
+        <div class="proj-grad"></div>
+        <div class="proj-content">
+          <div class="ptag">Government · Secretariat</div>
+          <h3>South Punjab Civil Secretariat &amp; GOR</h3>
+          <div class="ploc">Government Officers' Residences · Multan</div>
+          <div class="proj-meta">
+            <div>Scope<strong>Civil · MEP</strong></div>
+            <div>Complex<strong>134,632 sq.ft</strong></div>
+            <div>Status<strong>Delivered</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="proj reveal d1" data-cursor="View">
+        <div class="proj-photo" data-src="https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=70"></div>
+        <svg class="blueprint" viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="420" fill="#15151a"/>
+          <g stroke="rgba(198,162,86,.18)" stroke-width="1" fill="none">
+            <rect x="140" y="90" width="320" height="280"/>
+            <line x1="140" y1="160" x2="460" y2="160"/><line x1="140" y1="230" x2="460" y2="230"/><line x1="140" y1="300" x2="460" y2="300"/>
+            <line x1="220" y1="90" x2="220" y2="370"/><line x1="300" y1="90" x2="300" y2="370"/><line x1="380" y1="90" x2="380" y2="370"/>
+            <rect x="280" y="300" width="40" height="70"/>
+          </g>
+        </svg>
+        <div class="proj-grad"></div>
+        <div class="proj-content">
+          <div class="ptag">Government · Reconstruction</div>
+          <h3>Re-Construction of Old P&amp;D Building</h3>
+          <div class="ploc">Planning &amp; Development · Lahore</div>
+          <div class="proj-meta">
+            <div>Scope<strong>Civil · Architecture</strong></div>
+            <div>Type<strong>Tower Reconstruction</strong></div>
+            <div>Status<strong>In Progress</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SISTER COMPANY -->
+<section class="sec" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sister reveal" data-cursor="Group">
+      <div>
+        <span class="eyebrow">Part of a Group</span>
+        <h3>Sayed Allauddin &amp; Co.</h3>
+        <p>Alpha Achievers operates alongside its sister concern, Sayed Allauddin &amp; Co. — a long-standing contracting house under the same ownership. Together the group brings combined execution capacity, an established procurement track record and shared engineering resources to every commission.</p>
+      </div>
+      <div class="sister-seal">
+        <span class="sm">SAC</span>
+        <span class="ss">Sayed Allauddin &amp; Co.</span>
+        <span class="est">Group Partner · Contracting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORG CHART -->
+<section class="sec" id="org">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <span class="eyebrow center">Leadership &amp; Structure</span>
+      <h2>One chain of <em>accountability</em></h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">A flat, accountable structure — division heads report directly to leadership, so decisions move fast and quality stays owned.</p>
+    </div>
+
+    <div class="org reveal">
+      <div class="org-top">
+        <div class="node lead" data-cursor="CEO">
+          <div class="role">Chief Executive</div>
+          <div class="name">Owner &amp; CEO</div>
+        </div>
+      </div>
+
+      <svg class="org-svg" id="orgSvg" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M600 0 L600 30"/>
+        <path d="M200 60 L200 30 L1000 30 L1000 60"/>
+        <path d="M600 30 L600 60"/>
+      </svg>
+
+      <div class="org-branches">
+        <div class="branch">
+          <div class="node head" data-cursor="Civil"><div class="role">Division 01</div><div class="name">Director — Civil</div></div>
+          <div class="org-conn"></div>
+          <div class="team">
+            <div class="subnode">Structural Engineers</div>
+            <div class="subnode">Site Engineers</div>
+            <div class="subnode">Quantity Surveyors</div>
+          </div>
+        </div>
+        <div class="branch">
+          <div class="node head" data-cursor="Design"><div class="role">Division 02</div><div class="name">Director — Architecture</div></div>
+          <div class="org-conn"></div>
+          <div class="team">
+            <div class="subnode">Design &amp; Detailing</div>
+            <div class="subnode">BIM Coordination</div>
+            <div class="subnode">Visualisation</div>
+          </div>
+        </div>
+        <div class="branch">
+          <div class="node head" data-cursor="MEP"><div class="role">Division 03</div><div class="name">Director — MEP</div></div>
+          <div class="org-conn"></div>
+          <div class="team">
+            <div class="subnode">Mechanical &amp; HVAC</div>
+            <div class="subnode">Electrical &amp; LV</div>
+            <div class="subnode">Plumbing &amp; Fire</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Start a Conversation</span>
+      <h2>Let's build <em>something lasting</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="ci">
+          <div class="k">Head Office</div>
+          <div class="v">Aamir Majid Road, near Bridge Garnata<span>Building No. 3 · Floor 5 · Office No. 10 · Jeddah, Kingdom of Saudi Arabia</span></div>
+        </div>
+        <div class="ci">
+          <div class="k">Email</div>
+          <div class="v">alphaarchivers@gmail.com</div>
+        </div>
+        <div class="ci">
+          <div class="k">Phone</div>
+          <div class="v">+966 59 762 3098</div>
+        </div>
+        <div class="ci">
+          <div class="k">Registration</div>
+          <div class="v">Limited Liability Company (LLC)<span>Unified National No. 7054645549 · Capital SAR 14,000,000</span></div>
+        </div>
+      </div>
+
+      <div class="form reveal d1">
+        <h3>Request a consultation</h3>
+        <div class="field"><label>Full name</label><input type="text" placeholder="Your name" data-cursor="Type"></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" data-cursor="Type"></div>
+        <div class="field"><label>Division of interest</label>
+          <select data-cursor="Select"><option>Civil &amp; Structural</option><option>Architecture &amp; Design</option><option>MEP &amp; Building Services</option><option>Full Turnkey Delivery</option></select>
+        </div>
+        <div class="field"><label>Project brief</label><textarea rows="4" placeholder="Tell us about your project" data-cursor="Type"></textarea></div>
+        <button class="btn btn-gold" id="sendBtn" data-cursor="Send">Send Enquiry</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="mark">ALPHA ACHIEVERS</div>
+        <div class="sub">Construction · Saudi Arabia</div>
+        <p>Integrated civil, architectural and MEP construction — engineered to documentation-grade precision, aligned with Vision 2030.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Divisions</h4>
+        <a href="#divisions">Civil &amp; Structural</a>
+        <a href="#divisions">Architecture &amp; Design</a>
+        <a href="#divisions">MEP &amp; Building Services</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#projects">Projects</a>
+        <a href="#org">Leadership</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Alpha Achievers Company · LLC · Jeddah, Saudi Arabia</span>
+      <span>In group with Sayed Allauddin &amp; Co.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ---- custom cursor ---- */
+  var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if(fine && !reduce){
+    document.body.classList.add('has-cursor');
+    var dot=document.getElementById('dot'),ring=document.getElementById('ring'),clabel=document.getElementById('clabel');
+    var mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my,lx=mx,ly=my;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+    document.addEventListener('mousedown',function(){ring.classList.add('clicking');});
+    document.addEventListener('mouseup',function(){ring.classList.remove('clicking');});
+    function loop(){
+      rx+=(mx-rx)*0.16; ry+=(my-ry)*0.16;
+      lx+=(mx-lx)*0.22; ly+=(my-ly)*0.22;
+      dot.style.transform='translate('+mx+'px,'+my+'px) translate(-50%,-50%)';
+      ring.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
+      clabel.style.transform='translate('+lx+'px,'+(ly)+'px) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    }
+    loop();
+    var targets=document.querySelectorAll('a,button,[data-cursor],input,select,textarea,.proj,.pillar,.node,.subnode,.division');
+    targets.forEach(function(el){
+      el.addEventListener('mouseenter',function(){
+        ring.classList.add('hovering');
+        var lbl=el.getAttribute('data-cursor');
+        if(lbl){clabel.textContent=lbl;clabel.classList.add('show');}
+      });
+      el.addEventListener('mouseleave',function(){
+        ring.classList.remove('hovering');
+        clabel.classList.remove('show');
+      });
+    });
+  }
+
+  /* ---- nav scroll state ---- */
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>40)nav.classList.add('solid');else nav.classList.remove('solid');
+  });
+
+  /* ---- mobile menu ---- */
+  var burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu');
+  burger.addEventListener('click',function(){mm.classList.toggle('open');});
+  mm.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mm.classList.remove('open');});});
+
+  /* ---- reveal on scroll ---- */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+
+  /* ---- animated counters ---- */
+  function animateCount(el){
+    var target=parseFloat(el.getAttribute('data-count'));
+    var suffix=el.getAttribute('data-suffix')||'';
+    var dur=1600,start=performance.now();
+    function step(now){
+      var p=Math.min((now-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      var val=target*eased;
+      el.textContent=(target%1===0?Math.round(val):val.toFixed(0))+suffix;
+      if(p<1)requestAnimationFrame(step);else el.textContent=target+suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var co=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){animateCount(en.target);co.unobserve(en.target);}});
+  },{threshold:0.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){co.observe(el);});
+
+  /* ---- lazy-load photos with graceful fallback ---- */
+  function loadPhoto(el){
+    var src=el.getAttribute('data-src');if(!src)return;
+    var img=new Image();
+    img.onload=function(){el.style.backgroundImage='url('+src+')';el.classList.add('loaded');};
+    img.onerror=function(){/* blueprint fallback stays */};
+    img.src=src;
+  }
+  var po=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){loadPhoto(en.target);po.unobserve(en.target);}});
+  },{threshold:0.05,rootMargin:'200px'});
+  document.querySelectorAll('[data-src]').forEach(function(el){po.observe(el);});
+
+  /* ---- hero parallax ---- */
+  if(!reduce){
+    var heroPhoto=document.getElementById('heroPhoto');
+    window.addEventListener('scroll',function(){
+      var y=window.scrollY;
+      if(y<window.innerHeight && heroPhoto){
+        heroPhoto.style.transform='translateY('+(y*0.18)+'px) scale(1.05)';
+      }
+    });
+  }
+
+  /* ---- org chart connector draw ---- */
+  var svg=document.getElementById('orgSvg');
+  if(svg){
+    var paths=svg.querySelectorAll('path');
+    paths.forEach(function(p){var len=p.getTotalLength();p.style.strokeDasharray=len;p.style.strokeDashoffset=len;p.style.transition='stroke-dashoffset 1.4s ease';});
+    var so=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){if(en.isIntersecting){paths.forEach(function(p){p.style.strokeDashoffset='0';});so.unobserve(en.target);}});
+    },{threshold:0.4});
+    so.observe(svg);
+  }
+
+  /* ---- form (sample only) ---- */
+  var sendBtn=document.getElementById('sendBtn');
+  if(sendBtn){sendBtn.addEventListener('click',function(){
+    var orig=sendBtn.textContent;sendBtn.textContent='Thank you — we will be in touch';
+    setTimeout(function(){sendBtn.textContent=orig;},2600);
+  });}
+})();
+</script>
+</body>
+</html>
